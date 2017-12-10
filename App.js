@@ -1,10 +1,11 @@
 import React from 'react'
 import { View } from 'react-native'
 import { TabNavigator } from 'react-navigation'
+import { Provider } from 'react-redux'
 import styled from 'styled-components/native'
 import StatusBar from './components/StatusBar'
 import NewDeck from './views/NewDeck'
-import DeckList from './views/NewDeck'
+import DeckList from './views/DeckList'
 
 const MainView = styled.View`
   flex: 1;
@@ -13,16 +14,16 @@ const MainView = styled.View`
 `
 
 const Tabs = TabNavigator({
-  DeckList: {
-    screen: DeckList,
-    navigationOptions: {
-      tabBarLabel: 'DeckList',
-    }
-  },
   NewDeck: {
     screen: NewDeck,
     navigationOptions: {
       tabBarLabel: 'New Deck',
+    }
+  },
+  DeckList: {
+    screen: DeckList,
+    navigationOptions: {
+      tabBarLabel: 'Deck List',
     }
   },
 })
@@ -31,8 +32,8 @@ export default class App extends React.Component {
   render() {
     return (
       <MainView>
-          <StatusBar />
-          <Tabs />
+        <StatusBar />
+        <Tabs />
       </MainView>
     )
   }

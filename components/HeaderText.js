@@ -15,8 +15,7 @@ export default class HeaderText extends Component {
     size: PropTypes.number,
   }
   render() {
-    const { children, size, theme } = this.props
-    console.log(theme)
+    const { children, size} = this.props
     return (
       <View>
         <MainText size={size}>{children}</MainText>

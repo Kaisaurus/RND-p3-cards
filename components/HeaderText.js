@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 const MainText = styled.Text`
   text-align: center;
   font-size: ${props => props.size || 40};
-  color: #eee;
+  color: #222;
 `
 
 export default class HeaderText extends Component {

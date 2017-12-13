@@ -1,20 +1,26 @@
 import React, { Component } from 'react'
-import { View, Text, ScrollView } from 'react-native'
-import styled from 'styled-components/native'
-import HeaderText from '../../components/HeaderText';
-import CenterView from '../../components/CenterView';
-// import Deck from './Deck'
+import Deck from './Deck'
+import { List, ListItem, H2, Text, Content, Button, Label, Form, Item, Input } from 'native-base'
+import { Row, Grid } from 'react-native-easy-grid'
+
+const items = ['Deck1', 'Deck2', 'Deck2']
 
 export default class DeckList extends Component {
   render() {
     return (
-      <CenterView>
-        <HeaderText>Deck List</HeaderText>
-        <ScrollView>
-          {/* <Deck name={'Deck 1'} cards={10} /> */}
+      <Content>
+        <H2>Deck List</H2>
+        <Grid style={{ flex: 1 }}>
 
-        </ScrollView>
-      </CenterView>
+          <List dataArray={items}
+            renderRow={(item) =>
+              <ListItem>
+                <Text>{item} boom</Text>
+              </ListItem>
+            }>
+          </List>
+        </Grid>
+      </Content>
     )
   }
 }

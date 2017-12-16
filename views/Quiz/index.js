@@ -39,25 +39,41 @@ class Quiz extends Component {
     const { title, cards } = this.props
     const { currentCard, showAnswer, correct } = this.state
     return (
-      <Content>
+      <Content padder>
         {currentCard < cards.length
           ?
           <View>
-            <Text>Question {currentCard + 1}/{cards.length}</Text>
-            <H1>{cards[currentCard].question}</H1>
+            <Text>
+              Question {currentCard + 1}/{cards.length}
+            </Text>
+            <H1 style={_styles.header}>
+              {cards[currentCard].question}
+            </H1>
             {showAnswer
               ?
               <View>
-                <H1>Answer: {cards[currentCard].answer}</H1>
-                <Button onPress={this._onPressCorrect}>
+                <H1 style={_styles.header}>
+                  Answer: {cards[currentCard].answer}
+                </H1>
+                <Button
+                  block
+                  style={_styles.blockButton}
+                  onPress={this._onPressCorrect}
+                >
                   <Text>Correct</Text>
                 </Button>
-                <Button onPress={this._onPressIncorrect}>
+                <Button
+                  block
+                  style={_styles.blockButton}
+                  onPress={this._onPressIncorrect}
+                >
                   <Text>Incorrect</Text>
                 </Button>
               </View>
               :
               <Button
+                block
+                style={_styles.blockButton}
                 onPress={this._onPressAnswer}
               >
                 <Text>Show Answer</Text>
@@ -66,8 +82,10 @@ class Quiz extends Component {
           </View>
           :
           <View>
-            <H1>Finished!</H1>
+            <H1 style={_styles.header}>Finished!</H1>
             <Button
+              style={_styles.blockButton}
+              block
               onPress={this._onPressBack}>
               <Text>Back to Decks</Text>
             </Button>
@@ -75,6 +93,16 @@ class Quiz extends Component {
         }
       </Content>
     )
+  }
+}
+const _styles = {
+  header: {
+    textAlign: 'center',
+    marginTop: 10,
+    marginBottom: 10
+  },
+  blockButton: {
+    margin: 5,
   }
 }
 const mapStateToProps = ({ decks }, props) => {

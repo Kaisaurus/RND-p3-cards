@@ -73,22 +73,12 @@ class AddCard extends Component {
               onSubmitEditing={this._onSubmitAddCard}
             />
           </Item>
-          <Text
-            style={{
-              // color: errorTextColor,
-              textAlign: 'right'
-            }}
-          >
-            {/* {errorText} */}
-            {/* {successText} */}
-          </Text>
         </Form>
         <Button
-          large
           block
           onPress={this._onSubmitAddCard}>
           <Text>Add Card</Text>
-          <Icon name='md-add' style={{ fontSize: 40 }} />
+          <Icon name='md-add' />
         </Button>
       </Content>
     )

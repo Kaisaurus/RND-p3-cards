@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import { List, ListItem, Button, Text, Content, Icon, Label, Form, Item, Input } from 'native-base'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 class DeckList extends Component {
   static PropTypes = {
@@ -62,5 +62,4 @@ const _styles = {
 const mapStateToProps = ({ decks }) => ({
   myDecks: decks.myDecks
 })
-
 export default connect(mapStateToProps)(DeckList)

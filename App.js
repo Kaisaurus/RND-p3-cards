@@ -5,6 +5,7 @@ import NewDeck from './views/NewDeck'
 import DeckList from './views/DeckList'
 import Deck from './views/Deck'
 import AddCard from './views/AddCard'
+import Quiz from './views/Quiz'
 import { H1, Container, Header, Body, Title, Content, Tab, Tabs } from 'native-base'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/es/integration/react'
@@ -43,10 +44,10 @@ const StackNav = StackNavigator({
     }),
   },
   QuizView: {
-    screen: Deck,
-    // navigationOptions: ({ navigation }) => ({
-    //   title: `${navigation.state.params.deckTitle}`,
-    // }),
+    screen: Quiz,
+    navigationOptions: ({ navigation }) => ({
+      title: `Quiz: ${navigation.state.params.deckTitle}`,
+    }),
   },
 })
 

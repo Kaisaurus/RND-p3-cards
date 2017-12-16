@@ -21,7 +21,7 @@ const store = createStore(
 )
 
 const persistor = persistStore(store)
-persistor.purge()
+// persistor.purge()
 
 export default { store, persistor }
 

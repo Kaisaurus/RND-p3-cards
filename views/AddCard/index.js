@@ -1,40 +1,48 @@
 import React, { Component } from 'react'
 import { H2, Text, Content, Icon, Button, Form, Label, Input, Item } from 'native-base'
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { addCard } from '../../actions/cardActions'
 
 class AddCard extends Component {
-  static PropTypes = {
-    // deck: PropTypes.array.isRequired
-  }
   state = {
     question: '',
+    addedQuestion: '',
     answer: '',
   }
   _onSubmitAddCard = () => {
-    const { question, answer } = this.state
+    const question = this.state.question.trim()
+    const answer = this.state.answer.trim()
     const { addCard } = this.props
     const { deckTitle } = this.props.navigation.state.params
     addCard({ question, answer, title: deckTitle })
-    // const { navigation, deck } = this.props
-    // this.props.navigation.navigate('DeckView', { deckTitle: deck.title })
+    this.setState({ addedQuestion: question, question: '', answer: '' })
   }
   _onSubmitQuestion = () => {
     this._answerInput._root.focus()
   }
   _onChangeTextAnswer = value => {
-    this.setState({ answer: value })
+    this.setState({ answer: value.trimLeft() })
   }
   _onChangeTextQuestion = value => {
-    this.setState({ question: value })
+    this.setState({ question: value.trimLeft() })
   }
   render() {
     const { deckTitle } = this.props.navigation.state.params
-    // const cardCount = deck.cards.length.toString()
+    const { addedQuestion } = this.state
     return (
       <Content padder>
         <H2 style={{ textAlign: 'center' }}>Add Card</H2>
+        {addedQuestion !== '' &&
+          <Text style={{ textAlign: 'center', color: '#0a7' }}>
+            "{addedQuestion}"{"\n"}
+            <Text>
+              added to{'\u0020'}
+            </Text>
+            <Text style={{ color: '#08f' }}>
+              {deckTitle}
+            </Text>
+          </Text>
+        }
         <Form>
           <Item
             inlineLabel
@@ -86,12 +94,9 @@ class AddCard extends Component {
     )
   }
 }
-
 const _styles = {
   icon: {
     margin: 5
   },
 }
-
-
 export default connect(undefined, { addCard })(AddCard)

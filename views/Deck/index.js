@@ -8,9 +8,13 @@ class Deck extends Component {
   static PropTypes = {
     deck: PropTypes.array.isRequired
   }
-  onPressAddCard = () => {
+  _onPressQuiz = () => {
     const { navigation, deck } = this.props
-    this.props.navigation.navigate('AddCardView', { deckTitle: deck.title })
+    navigation.navigate('QuizView', { deckTitle: deck.title })
+  }
+  _onPressAddCard = () => {
+    const { navigation, deck } = this.props
+    navigation.navigate('AddCardView', { deckTitle: deck.title })
   }
   render() {
     const { deck } = this.props
@@ -28,11 +32,11 @@ class Deck extends Component {
             <Icon name='md-trash' />
           </Button>
         </View>
-        <Button large style={_styles.bigBtn} onPress={this.onPressAddCard}>
+        <Button large style={_styles.bigBtn} onPress={this._onPressAddCard}>
           <Text> Add Card</Text>
           <Icon name='md-add' style={{ fontSize: 30 }} />
         </Button>
-        <Button large style={_styles.bigBtn}>
+        <Button large style={_styles.bigBtn} onPress={this._onPressQuiz}>
           <Text> Start Quiz!</Text>
           <Icon name='md-albums' />
         </Button>

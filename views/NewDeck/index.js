@@ -22,7 +22,7 @@ class NewDeck extends Component {
     const { deckTitle } = this.state
 
     this._resetFields()
-    this.setState({ deckTitle: value })
+    this.setState({ deckTitle: value.trimLeft() })
 
     if (myDecks.find(deck => deck['title'] === value)) {
       this.setState({ errorText: `A Deck with the name '${value}' already exists` })
@@ -39,7 +39,7 @@ class NewDeck extends Component {
     if (this.state.deckTitle === '') {
       this.setState({ errorText: 'Deck name cannot be empty', successText: '' })
     } else {
-      newDeck(deckTitle)
+      newDeck(deckTitle.trim())
       this.props.navigation.navigate('DeckView', { deckTitle: deckTitle })
       this._resetFields()
     }

@@ -30,26 +30,41 @@ const decks = (state = defaultState, action) => {
         }],
       }
     }
+    case types.REMOVE_DECK: {
+      const { title } = action.payload
+      const myDecks = state.myDecks.filter(d => {
+        return d.title !== title
+      })
+      return {
+        ...state,
+        myDecks
+      }
+    }
     case types.ADD_CARD: {
       const { title, answer, question } = action.payload
       const newCard = { answer, question }
       const myDecks = state.myDecks.map(d => {
         return d.title === title
-          ? newCard // return deck with additional card in cards
+          ? { title, cards: [...d.cards, newCard] }
           : d
       })
-      console.log(myDecks)
       return {
         ...state,
-        // myDecks,
+        myDecks,
       }
     }
-    // case types.REMOVE_DECK:
-    //   const { title } = action.payload
-    //   return {
-    //     ...state,
-    //     myDecks: state.decks.myDecks.filter(deck => deck.title !== title),
-    //   }
+    case types.REMOVE_CARD: {
+      const { title, question } = action.payload
+      const myDecks = state.myDecks.map(d => {
+        return d.title === title
+          ? { title, cards: d.cards.filter(c => c.question !== question) }
+          : d
+      })
+      return {
+        ...state,
+        myDecks
+      }
+    }
     default:
       return state;
   }

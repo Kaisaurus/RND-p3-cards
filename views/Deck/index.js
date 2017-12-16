@@ -1,25 +1,64 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
+import { H1, H2, H3, Text, Content, Icon, Button } from 'native-base'
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
 
 class Deck extends Component {
-
-  static navigationOptions = ({ navigation }) => {
-    // access params using navigation.state.params
-    return {
-      title: navigation.state.params.deckTitle
-    }
+  static PropTypes = {
+    deck: PropTypes.array.isRequired
+  }
+  onPressAddCard = () => {
+    const { navigation, deck } = this.props
+    this.props.navigation.navigate('AddCardView', { deckTitle: deck.title })
   }
   render() {
-    const { navigation } = this.props
+    const { deck } = this.props
+    const cardCount = deck.cards.length.toString()
     return (
-      <View>
-        <Text>Deck</Text>
-        {/* <NavBtn onPress={() => navigation.navigate('DrawerOpen')}>
-          <Text>Press here to open the drawer!</Text>
-        </NavBtn> */}
+      // using View instead of recommended '<Content></Content>' because fluid height didnt work
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <H1 style={{ margin: 20 }}>{deck.title}</H1>
+        <H2>{cardCount} Cards</H2>
+        <View style={{ flexDirection: 'row', margin: 20 }}>
+          <Button rounded style={_styles.icon}>
+            <Icon name='md-create' />
+          </Button>
+          <Button rounded style={_styles.icon}>
+            <Icon name='md-trash' />
+          </Button>
+        </View>
+        <Button large style={_styles.bigBtn} onPress={this.onPressAddCard}>
+          <Text> Add Card</Text>
+          <Icon name='md-add' style={{ fontSize: 30 }} />
+        </Button>
+        <Button large style={_styles.bigBtn}>
+          <Text> Start Quiz!</Text>
+          <Icon name='md-albums' />
+        </Button>
       </View>
     )
   }
 }
 
-export default Deck
+const _styles = {
+  icon: {
+    margin: 5
+  },
+  bigBtn: {
+    flexDirection: 'row',
+    width: 250,
+    justifyContent: 'center',
+    alignSelf: 'center', // this is needed for center align
+    margin: 5
+  }
+}
+
+const mapStateToProps = (state, props) => {
+  const { deckTitle } = props.navigation.state.params
+  return ({
+    deck: state.decks.myDecks.find(deck => deck.title === deckTitle),
+  })
+}
+
+export default connect(mapStateToProps, {})(Deck)

@@ -3,50 +3,53 @@ import HeaderText from '../../components/HeaderText';
 import { H2, Text, Content, Icon, Button, Label, Form, Item, Input } from 'native-base'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import { saveDeckTitle } from '../../actions/deckActions'
+import { newDeck } from '../../actions/deckActions'
 
 class NewDeck extends Component {
   static PropTypes = {
-    myDecks: PropTypes.array
+    myDecks: PropTypes.array.isRequired
   }
   state = {
     deckTitle: '',
     errorText: '',
     successText: '',
   }
-  componentDidMount() {
-    // console.log(this.props.myDecks)
+  _resetFields = () => {
+    this.setState({ deckTitle: '', errorText: '', successText: '' })
   }
-  _onNameChange = (value) => {
+  _onChangeTextName = value => {
     const { myDecks } = this.props
     const { deckTitle } = this.state
 
-    this.setState({ deckTitle: value, errorText: '', successText: '' })
+    this._resetFields()
+    this.setState({ deckTitle: value })
 
-    if (myDecks.find(deck => deck['title'] === deckTitle)) {
-      this.setState({ errorText: 'A Deck with that name already exists', successText: '' })
-    } else if (this.state.deckTitle === '') {
-      this.setState({ successText: 'Deck name is available', errorText: '' })
+    if (myDecks.find(deck => deck['title'] === value)) {
+      this.setState({ errorText: `A Deck with the name '${value}' already exists` })
+    } else if (value === '') {
+      this.setState({ errorText: 'Deck name cannot be empty' })
+    } else {
+      this.setState({ successText: 'Deck name is available' })
     }
   }
   _onSubmit = () => {
     const { deckTitle } = this.state
-    const { saveDeckTitle, myDecks } = this.props
+    const { newDeck, myDecks, navigation } = this.props
 
     if (this.state.deckTitle === '') {
       this.setState({ errorText: 'Deck name cannot be empty', successText: '' })
     } else {
-      saveDeckTitle(deckTitle)
-      console.log('nav', this.props.navigation)
-      this.props.navigation.navigate('DeckView', { deckTitle })
+      newDeck(deckTitle)
+      this.props.navigation.navigate('DeckView', { deckTitle: deckTitle })
+      this._resetFields()
     }
   }
   render() {
     const { errorText, successText } = this.state
-    const errorTextColor = errorText !== '' ? '#c00' : '#0c0'
+    const alertTextColor = errorText !== '' ? '#c00' : '#0c0'
     return (
       <Content padder style={{ paddingTop: 40 }}>
-        {/* <H2 style={{textAlign: 'center'}}>Create Deck</H2>       */}
+        <H2 style={{ textAlign: 'center' }}>Create Deck</H2>
         <Form>
           <Item
             inlineLabel
@@ -56,10 +59,10 @@ class NewDeck extends Component {
           >
             <Label>Deck Name</Label>
             <Input
-              // style={{textAlign: 'center'}}
-              onChangeText={this._onNameChange}
+              onChangeText={this._onChangeTextName}
               value={this.state.deckTitle}
               autoFocus={true}
+              onSubmitEditing={this._onSubmit}
             />
             {errorText !== '' &&
               <Icon name='close-circle' />
@@ -70,7 +73,7 @@ class NewDeck extends Component {
           </Item>
           <Text
             style={{
-              color: errorTextColor,
+              color: alertTextColor,
               textAlign: 'right'
             }}
           >
@@ -80,7 +83,6 @@ class NewDeck extends Component {
         </Form>
         <Button
           block
-          bordered
           style={{ marginTop: 20 }}
           onPress={this._onSubmit}
         >
@@ -94,5 +96,5 @@ const mapStateToProps = ({ decks }) => ({
   myDecks: decks.myDecks
 })
 
-export default connect(mapStateToProps, { saveDeckTitle })(NewDeck)
+export default connect(mapStateToProps, { newDeck })(NewDeck)
 // export default NewDeck

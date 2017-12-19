@@ -1,19 +1,8 @@
-# Note to reviewer
-** THIS PROJECT IS INCOMPLETE **
-Sorry for this incomplete submission.
-
-Due to unforseen circumstances I was unable to finish the program in time.
-
-My Mentor recommended to post a unfinished project and request extension.
-
-Best regards, Kai
 
 ## React Nano Degree Cards Project
 
 This is a Android flash card app written using React Native.
-(It has not been tested for iOS)
-It has the following funcitonality:
-* Not much yet...
+(It has not been tested for Android)
 
 ### Requirements for the quick run
 * Git

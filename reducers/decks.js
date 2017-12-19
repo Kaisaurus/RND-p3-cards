@@ -30,11 +30,12 @@ const decks = (state = defaultState, action) => {
         }],
       }
     }
-    case types.REMOVE_DECK: {
-      const { title } = action.payload
+    case types.DELETE_DECK: {
+      const title = action.payload
       const myDecks = state.myDecks.filter(d => {
         return d.title !== title
       })
+      console.log(myDecks, title)
       return {
         ...state,
         myDecks

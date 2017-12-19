@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
-import { List, ListItem, Button, Text, Content, Icon, Label, Form, Item, Input } from 'native-base'
+import { List, Content } from 'native-base'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import DeckListItem from './DeckListItem'
 
 class DeckList extends Component {
   static PropTypes = {
@@ -23,40 +24,17 @@ class DeckList extends Component {
       <Content>
         <List dataArray={myDecks}
           renderRow={deck =>
-            <ListItem
-              button
-              onPress={() => this._onPressDeck(deck.title)}
-              style={{ justifyContent: 'space-between' }}
-            >
-              <View>
-                <Text>{deck.title}</Text>
-                <Text note>{deck.cards.length} cards</Text>
-              </View>
-              <View style={{ flexDirection: 'row' }}>
-                <Button
-                  transparent
-                  onPress={() => this._onPressAddCard(deck.title)}
-                >
-                  <Icon name='md-add' style={_styles.icon} />
-                </Button>
-                <Button
-                  transparent
-                  onPress={() => this._onPressQuiz(deck.title)}
-                >
-                  <Icon name='md-albums' style={_styles.icon} />
-                </Button>
-              </View>
-            </ListItem>
+            <DeckListItem
+              onPressQuiz={() => this._onPressQuiz(deck.title)}
+              onPressAddCard={() => this._onPressAddCard(deck.title)}
+              onPressDeck={() => this._onPressDeck(deck.title)}
+              title={deck.title}
+              cardCount={deck.cards.length}
+            />
           }>
         </List>
       </Content>
     )
-  }
-}
-const _styles = {
-  icon: {
-    fontSize: 40,
-    margin: 5,
   }
 }
 const mapStateToProps = ({ decks }) => ({

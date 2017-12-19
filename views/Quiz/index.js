@@ -12,7 +12,7 @@ class Quiz extends Component {
   state = {
     currentCard: 0,
     showAnswer: false,
-    correct: true,
+    score: 0,
   }
   _onPressAnswer = () => {
     this.setState({ showAnswer: true })
@@ -20,13 +20,13 @@ class Quiz extends Component {
   _getNextCard = () => {
     const nextCard = this.state.currentCard + 1
     this.setState({ showAnswer: false, currentCard: nextCard })
-
   }
   _onPressCorrect = () => {
     // register correct answer
+    const { score } = this.state
+    this.setState({ score: score + 1 })
     this._getNextCard()
   }
-
   _onPressIncorrect = () => {
     // register incorrect answer
     this._getNextCard()
@@ -34,12 +34,21 @@ class Quiz extends Component {
   _onPressBack = () => {
     const { navigation, title } = this.props
     navigation.navigate('HomeView', { deckTitle: title })
+    this._resetQuiz()
+  }
+  _resetQuiz = () => {
+    this.setState({ score: 0, currentCard: 0 })
+  }
+  _onPressAddCard = () => {
+    const { navigation, title } = this.props
+    navigation.navigate('AddCardView', { deckTitle: title })
   }
   render() {
     const { title, cards } = this.props
-    const { currentCard, showAnswer, correct } = this.state
+    const { currentCard, showAnswer, score } = this.state
     return (
-      <Content padder>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        {/* // <Content padder> */}
         {currentCard < cards.length
           ?
           <View>
@@ -80,18 +89,31 @@ class Quiz extends Component {
               </Button>
             }
           </View>
-          :
-          <View>
-            <H1 style={_styles.header}>Finished!</H1>
-            <Button
-              style={_styles.blockButton}
-              block
-              onPress={this._onPressBack}>
-              <Text>Back to Decks</Text>
-            </Button>
-          </View>
+          : cards.length === 0
+            ?
+            <View>
+              <H1 style={_styles.header}>No cards added to the deck yet!</H1>
+              <Button
+                style={_styles.blockButton}
+                block
+                onPress={this._onPressAddCard}>
+                <Text>Add a Card</Text>
+              </Button>
+            </View>
+            :
+            <View>
+              <H1 style={_styles.header}>Finished!</H1>
+              <H1 style={_styles.header}>Your had {score / cards.length * 100}% correct!</H1>
+              <Button
+                style={_styles.blockButton}
+                block
+                onPress={this._onPressBack}>
+                <Text>Back to Decks</Text>
+              </Button>
+            </View>
         }
-      </Content>
+        {/* </Content> */}
+      </View>
     )
   }
 }

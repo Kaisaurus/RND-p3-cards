@@ -8,14 +8,18 @@ class AddCard extends Component {
     question: '',
     addedQuestion: '',
     answer: '',
+    showError: false,
   }
   _onSubmitAddCard = () => {
-    const question = this.state.question.trim()
-    const answer = this.state.answer.trim()
+    const { question, answer } = this.state
     const { addCard } = this.props
-    const { deckTitle } = this.props.navigation.state.params
-    addCard({ question, answer, title: deckTitle })
-    this.setState({ addedQuestion: question, question: '', answer: '' })
+    if (question === '' || answer === '') {
+      this.setState({ showError: true })
+    } else {
+      const { deckTitle } = this.props.navigation.state.params
+      addCard({ question: question.trim(), answer: answer.trim(), title: deckTitle })
+      this.setState({ addedQuestion: question.trim(), question: '', answer: '', showError: false })
+    }
   }
   _onSubmitQuestion = () => {
     this._answerInput._root.focus()
@@ -28,10 +32,19 @@ class AddCard extends Component {
   }
   render() {
     const { deckTitle } = this.props.navigation.state.params
-    const { addedQuestion } = this.state
+    const { addedQuestion, showError, question, answer } = this.state
+    const errorMsg = question === ''
+      ? 'Question may not be empty'
+      : answer === ''
+        ? 'Answer may not be empty'
+        : '';
     return (
       <Content padder>
         <H2 style={{ textAlign: 'center' }}>Add Card</H2>
+        {
+          showError &&
+          <Text style={{ color: '#c00' }}>{errorMsg}</Text>
+        }
         {addedQuestion !== '' &&
           <Text style={{ textAlign: 'center', color: '#0a7' }}>
             "{addedQuestion}"{"\n"}

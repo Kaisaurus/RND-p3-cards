@@ -9,10 +9,10 @@ export function newDeck(payload) {
   }
 }
 
-export function removeDeck(payload) {
+export function deleteDeck(payload) {
   return dispatch => {
     dispatch({
-      type: types.REMOVE_DECK,
+      type: types.DELETE_DECK,
       payload
     })
   }

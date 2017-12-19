@@ -21,7 +21,7 @@ const store = createStore(
 )
 
 const persistor = persistStore(store)
-// persistor.purge()
+// persistor.purge() // purge store for testing
 
 export default { store, persistor }
 

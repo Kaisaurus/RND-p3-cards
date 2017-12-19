@@ -1,17 +1,13 @@
 import * as types from '../actions/types';
 
 const defaultState = {
+  completedQuiz: '',
+  notificationSet: false,
   myDecks: [
     {
-      title: 'samm',
+      title: 'Demo Deck',
       cards: [
-        { question: 'boo', answer: 'baa' },
-      ]
-    },
-    {
-      title: 'samm2',
-      cards: [
-        { question: 'bii', answer: 'bea' },
+        { question: '1 + 1 = ?', answer: '2' },
       ]
     },
   ],
@@ -20,7 +16,7 @@ const defaultState = {
 const decks = (state = defaultState, action) => {
   switch (action.type) {
     case types.NEW_DECK: {
-      // creating separate scope so variables can be repeated in cases
+      // creating separate scope with {} so variables can be repeated in each case
       const title = action.payload
       return {
         ...state,
@@ -35,11 +31,7 @@ const decks = (state = defaultState, action) => {
       const myDecks = state.myDecks.filter(d => {
         return d.title !== title
       })
-      console.log(myDecks, title)
-      return {
-        ...state,
-        myDecks
-      }
+      return { ...state, myDecks }
     }
     case types.ADD_CARD: {
       const { title, answer, question } = action.payload
@@ -49,23 +41,32 @@ const decks = (state = defaultState, action) => {
           ? { title, cards: [...d.cards, newCard] }
           : d
       })
+      return { ...state, myDecks }
+    }
+    case types.QUIZ_COMPLETED:
       return {
         ...state,
-        myDecks,
+        completedQuiz: action.payload,
+        notificationSet: true
       }
-    }
-    case types.REMOVE_CARD: {
-      const { title, question } = action.payload
-      const myDecks = state.myDecks.map(d => {
-        return d.title === title
-          ? { title, cards: d.cards.filter(c => c.question !== question) }
-          : d
-      })
+    case types.SET_INIT_QUIZ_NOTIFICATION:
       return {
         ...state,
-        myDecks
+        notificationSet: true
       }
-    }
+    // for future functionality use
+    // case types.DELETE_CARD: {
+    //   const { title, question } = action.payload
+    //   const myDecks = state.myDecks.map(d => {
+    //     return d.title === title
+    //       ? { title, cards: d.cards.filter(c => c.question !== question) }
+    //       : d
+    //   })
+    //   return {
+    //     ...state,
+    //     myDecks
+    //   }
+    // }
     default:
       return state;
   }

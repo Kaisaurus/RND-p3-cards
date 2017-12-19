@@ -30,10 +30,8 @@ class Deck extends Component {
     )
   }
   _onPressConfirmDelete = () => {
-    this.props.navigation.navigate('HomeView')
-
+    this.props.navigation.goBack()
     this.props.deleteDeck(this.props.deck.title)
-
   }
   render() {
     const { deck } = this.props

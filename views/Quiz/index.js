@@ -4,6 +4,8 @@ import { H1, Button, Text, Content, Icon } from 'native-base'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { StackNavigator } from 'react-navigation'
+import { quizCompleted } from '../../actions/deckActions'
+import { getToday } from '../../utils/helpers';
 
 class Quiz extends Component {
   static PropTypes = {
@@ -34,21 +36,25 @@ class Quiz extends Component {
   _onPressBack = () => {
     const { navigation, title } = this.props
     navigation.navigate('HomeView', { deckTitle: title })
-    this._resetQuiz()
   }
-  _resetQuiz = () => {
+  _onPressReset = () => {
     this.setState({ score: 0, currentCard: 0 })
   }
   _onPressAddCard = () => {
     const { navigation, title } = this.props
     navigation.navigate('AddCardView', { deckTitle: title })
   }
+  _onCompletedQuiz = () => {
+    const { quizCompleted, completedQuiz } = this.props
+    if (completedQuiz !== getToday()) {
+      this.props.quizCompleted()
+    }
+  }
   render() {
     const { title, cards } = this.props
     const { currentCard, showAnswer, score } = this.state
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        {/* // <Content padder> */}
         {currentCard < cards.length
           ?
           <View>
@@ -100,19 +106,26 @@ class Quiz extends Component {
                 <Text>Add a Card</Text>
               </Button>
             </View>
-            :
-            <View>
-              <H1 style={_styles.header}>Finished!</H1>
-              <H1 style={_styles.header}>Your had {score / cards.length * 100}% correct!</H1>
-              <Button
-                style={_styles.blockButton}
-                block
-                onPress={this._onPressBack}>
-                <Text>Back to Decks</Text>
-              </Button>
-            </View>
+            : (
+              this._onCompletedQuiz(),
+              <View >
+                <H1 style={_styles.header}>Finished!</H1>
+                <H1 style={_styles.header}>Your had {score / cards.length * 100}% correct!</H1>
+                <Button
+                  style={_styles.blockButton}
+                  block
+                  onPress={this._onPressReset}>
+                  <Text>Reset Quiz</Text>
+                </Button>
+                <Button
+                  style={_styles.blockButton}
+                  block
+                  onPress={this._onPressBack}>
+                  <Text>Back to Decks</Text>
+                </Button>
+              </View>
+            )
         }
-        {/* </Content> */}
       </View>
     )
   }
@@ -130,6 +143,7 @@ const _styles = {
 const mapStateToProps = ({ decks }, props) => {
   const { deckTitle } = props.navigation.state.params
   const { title, cards } = decks.myDecks.find(d => d.title === deckTitle)
-  return ({ title, cards })
+  const { completedQuiz } = decks
+  return ({ title, cards, completedQuiz })
 }
-export default connect(mapStateToProps)(Quiz)
+export default connect(mapStateToProps, { quizCompleted })(Quiz)
